@@ -1,0 +1,33 @@
+create:
+  document.write       innerHTML     creatElement
+add: 
+  appendChild       inertBefore
+delete:  
+  removeChild
+modify:
+  element's attributes: src href  title...
+  element: innerHTML , innerText
+  form's attribute: value   type  disabled...
+  element's style:  style,  className
+search:
+   api function:  getElementByID  getElementsByTagName 
+   H5 function: querySelector  querySelectorAll
+   node function:  parentNode   children   perviousElementSibling  nextElementSibling   
+   
+   
+Attributes；
+  setAttribute:
+  getAttribute:
+  removeAttribute:
+  
+  
+event:
+  onclick
+  onmouseover
+  onmouseout
+  onfocus
+  onblur
+  onmousemove
+  onmouseup
+  onmousedown
+  
