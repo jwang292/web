@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>table</title>
+
+    <style>
+        table {
+            width: 500px;
+            margin: 100px auto;
+            border-collapse: collapse;
+            text-align: center;
+        }
+        
+        td,
+        th {
+            border: 1px solid #333;
+        }
+        
+        thead tr {
+            height: 40px;
+            background-color: #ccc;
+        }
+    </style>
+</head>
+
+<body>
+    <table cellspacing='0'>
+        <thead>
+            <th>name</th>
+            <th>course</th>
+            <th>grade</th>
+            <th>action</th>
+        </thead>
+        <tbody>
+
+        </tbody>
+    </table>
+    <script>
+        var datas = [{
+            name: 'jinfeng',
+            subject: 'web222',
+            grade: 100,
+        }, {
+            name: 'jinfeng1',
+            subject: 'web222',
+            grade: 98,
+        }, {
+            name: 'jinfeng2',
+            subject: 'web222',
+            grade: 99,
+        }, {
+            name: 'jinfeng3',
+            subject: 'web222',
+            grade: 88,
+        }];
+
+        var tbody = document.querySelector('tbody');
+        for (let i = 0; i < datas.length; i++) {
+            var tr = document.createElement('tr');
+            tbody.appendChild(tr);
+            for (let k in datas[i]) {
+                var td = document.createElement('td');
+                tr.appendChild(td);
+                td.innerHTML = datas[i][k];
+            }
+            var td = document.createElement('td');
+            td.innerHTML = '<a href="javascript:;">delete</a>';
+            tr.appendChild(td);
+        }
+        var as = document.querySelectorAll('a');
+        for (let i = 0; i < as.length; i++) {
+            as[i].onclick = function() {
+                tbody.removeChild(this.parentNode.parentNode);
+            }
+        }
+    </script>
+</body>
+
+</html>
