@@ -1,0 +1,42 @@
+git init | initialization
+git -add''  |put into stage
+git -add . |put all into stage
+git -reset HEAD ''   |remove from stage
+git -reset HEAD .  |remove all from stage
+got -reset --hard commitID | return back to past commit
+git -commit -m''  |submit with message
+git -commit -a -m''  |ignore stage to do submit
+git -checkout   |recall the file from directory 
+git rm -f ''   |totally delete
+git rm --cached |delete from directory area
+
+git status -s  |file shortcut status 
+gir status     |file status
+
+unmodifier |   red ??
+modifier no stage  | red m
+modifier and stage  | green m
+new file and stage | green a
+
+
+git log   | check submit history
+git log -2  | 2 history untile current history
+git log -2 --preetty=format:'%h | %an |%ar| %s'   add information with hash number| sumbit person|submit time|submit message
+git log --pretty=oneline   | show the history in one line
+
+git reflog --pretty=oneline | if we are in past commitID, we cannot see the whole history but except this command
+
+git branch | show all branch list
+git branch (new branch name) | creat a branch based on the current branch
+git checkout -b (new branch name) | creat and change to the branch
+git checkout (new branch name) | change to other branch
+
+git merge (branch name) | merge current branch with the branch_name 
+git branch -d ( branch name) | delete the branch
+
+git remote show directory_name | show the all directroy branch name
+git pull | update local branch code  equal with the directroy branch code
+git push directory_name --delete branch_name  | delete directory branch 
+
+
+
