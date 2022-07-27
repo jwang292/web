@@ -1,0 +1,6 @@
+netstat -ona | findstr :8080 | findstr LISTENING
+
+
+taskkill /PID 8752 /F
+
+8752 can be find from the first command.
