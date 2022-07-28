@@ -1,0 +1,2 @@
+Vscode 的 react 代码保存后,代码格式乱了怎么办？
+一个叫做JS-CSS-HTML Formatter的插件, 我把这个插件禁用后就OK了,不会再出现乱码现象;当然禁用后要重启vscode才行
