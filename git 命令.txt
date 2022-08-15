@@ -38,5 +38,14 @@ git remote show directory_name | show the all directroy branch name
 git pull | update local branch code  equal with the directroy branch code
 git push directory_name --delete branch_name  | delete directory branch 
 
+————————————————————————————————————————————————————————————————————————————————————
+步骤
 
+git add . 将文件添加进git
+git status 检查文件状态
+git commit -m '备注'   
+git push 上传到仓库
 
+git checkout master 转master 分支
+git merge login 合并login 到master 分支
+git push 上传仓库
