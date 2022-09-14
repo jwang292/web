@@ -1,0 +1,16 @@
+1. json-server
+
+2.mockjs
+
+REST API: 获取 get
+	  删除 delete
+	  添加 post
+ 	  修改 put patch
+    把请求信息直接拼接到url 中
+
+npm install -g json-server
+
+运行不了
+Set-ExecutionPolicy RemoteSigned -Scope CurrentUser
+
+json-server data.json --port 8888
