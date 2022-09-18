@@ -1,0 +1,9 @@
+泛型 generic type
+function fn <Type> (value:Type):Type{}
+<Type extends HTMLElement> 可以缩小范围
+多个generic type 
+function getProperty<Type, Key extends keyof Type>(obj:Type,key:Key){   //keyof可以获得一个类型/接口所有的key的联合类型
+return obj[key]
+}
+const user={name:'zs',age:18}
+getProperty(user,'name')
