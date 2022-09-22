@@ -1,0 +1,61 @@
+1. 在组件中解构props 后传给自定义组件
+export default function Login(props) {
+  return (
+    <div>
+      <NavBar {...props}>Login</NavBar>
+      <NavBar extra="middle">Home</NavBar>
+      <NavBar extra="right">Article</NavBar>
+    </div>
+  )
+}
+自定义组件中结构 history
+export default function NavBar({ children, extra, history }) {
+  const back = () => {
+    //返回上一页
+    console.log(history)
+  }
+
+2. 用高阶组件 withRouter 包裹
+import { withRouter } from 'react-router-dom'
+ const NavBarWithRouter = withRouter(NavBar)
+export default function Login() {
+  return (
+    <div>
+      <NavBarWithRouter>Login</NavBarWithRouter>
+      <NavBarWithRouter extra="middle">Home</NavBarWithRouterr>
+      <NavBarWithRouter extra="right">Article</NavBarWithRouter>
+    </div>
+  )
+}
+
+3. 在自定义组件中定义withRouter 导出一个直接包裹后的组件
+import { withRouter } from 'react-router-dom'
+// 拿到 history mathch location的前提是，这个组件是通过路由配置的； 此处navbar不是通过路由配置的，
+// login home却是。
+
+function NavBar({ children, extra, history }) {
+  const back = () => {
+    //返回上一页
+    console.log(history)
+  }
+  return (
+    <div className={styles.root}>
+      {/* 后退按钮 */}
+      <div className="left">
+        <Icon type="iconfanhui" onClick={back} />
+      </div>
+      <div className="title">{children}</div>
+      {/* 右侧内容 */}
+      <div className="right">{extra}</div>
+    </div>
+  )
+}
+export default withRouter(NavBar)
+
+4. hook 方法 useHistory useLocation useParmas(地址栏信息)
+function NavBar({ children, extra }) {
+  const history = useHistroy()
+  const back = () => {
+    //返回上一页
+    console.log(history)
+  }

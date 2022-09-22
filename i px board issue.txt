@@ -1,0 +1,87 @@
+device pixel ratio DPR 1.0 2.0 3.0
+
+以 iphone6 为例，iphone6 的屏幕宽度为 375px ，设计师做的视觉稿一般是750px ，也就是 2x ，这个时候设计师在视觉稿上画了 1px 的边框，于是你就写了 border:1px ，so...1px边框问题产生了。
+对设计师来说它的 1px 是相对于 750px 的（物理像素），对你来说你的 1px 是相对于 375px 的（css像素），实际上你应该是 border:0.5px 。
+
+
+1.- 实现原理：**伪元素 pseudo element+ transform:scale() 缩放**
+ - 伪元素`::after`或`::before`独立于当前元素，可以单独对其缩放而不影响元素本身的缩放
+为什么用伪元素？ 因为伪元素 ::after 或 ::before 是独立于当前元素，可以单独对其缩放而不影响元素本身的缩放
+基于 media 查询判断不同的设备像素比对线条进行缩放：
+.border-1px:before{
+    content: '';
+    position: absolute;
+    top: 0;
+    height: 1px;
+    width: 100%;
+    background-color: #999;
+    transform-origin: 50% 0%;
+}
+@media only screen and (-webkit-min-device-pixel-ratio:2){
+    .border-1px:before{
+        transform: scaleY(0.5);
+    }
+}
+@media only screen and (-webkit-min-device-pixel-ratio:3){
+    .border-1px:before{
+        transform: scaleY(0.33);
+    }
+}
+
+注意如果需要满足圆角，需要给伪类也加上 border-radius
+优点：兼容性好，无副作用，推荐使用
+
+
+2. box-shadow 不加边框加阴影
+box-shadow: 0  -1px 1px -1px #999, 
+            1px  0  1px -1px #999, 
+            0  1px  1px -1px #999, 
+            -1px 0  1px -1px #999;
+
+缺点：边框有阴影，颜色浅，同样也有兼容性问题，Safari 不支持 1px 以下的 box-shadow。
+
+作者：三分钟学前端An
+链接：https://juejin.cn/post/6994196887402184734
+来源：稀土掘金
+著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。
+3. viewport 
+通过设置缩放，让 CSS 像素等于真正的物理像素。
+const scale = 1 / window.devicePixelRatio;
+const viewport = document.querySelector('meta[name="viewport"]');
+if (!viewport) {
+    viewport = document.createElement('meta');
+    viewport.setAttribute('name', 'viewport');
+    window.document.head.appendChild(viewport);
+}
+
+viewport.setAttribute('content', 'width=device-width,user-scalable=no,initial-scale=' + scale + ',maximum-scale=' + scale + ',minimum-scale=' + scale);
+
+// 设置根字体大小
+var docEl = document.documentElement; 
+var fontsize = 10 * (docEl.clientWidth / 320) + 'px'; 
+docEl.style.fontSize = fontsize;
+
+缺点：
+
+通过 JS 对文档进行修改，所以性能上有一定影响
+会对项目中所有使用 rem 单位的对象进行影响。如果是老项目，则会全部更改 css 样式（不适合老项目改造）
+
+4. svg 实现
+因为 svg 是矢量图形，它的 1px 对应的物理像素就是 1px
+可以搭配 PostCSS 的 postcss-write-svg 使用：
+@svg border-1px { 
+  height: 2px; 
+  @rect { 
+    fill: var(--color, black); 
+    width: 100%; 
+    height: 50%; 
+    } 
+  } 
+.svg { 
+    border: 1px solid transparent; 
+    border-image: svg(border_1px param(--color #00b1ff)) 2 2 stretch; 
+}
+优点：实现简单，可以实现圆角，
+缺点：需要学习 svg 语法
+
+5.border:0.5px
