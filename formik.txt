@@ -1,0 +1,19 @@
+npm install formik --save
+
+useFormik 可以解构出 initialValues, onSubmit(values), validate(values)
+
+formit 可以解构deconstruct出 touched errors
+touched使用前必须绑定onbur
+isvalid 是否校验通过
+
+Yup专门用于 validata
+npm install yup
+import * as Yup from 'yup'
+validationSchema: Yup.object({
+      mobile: Yup.string()
+        .required('phone cannot be empty')
+        .matches(/^1\d{10}$/, 'phone formate is wrong'),
+      code: Yup.string()
+        .required('code cannot be empty')
+        .matches(/^\d{6}$/, 'phone formate is wrong'),
+    })
