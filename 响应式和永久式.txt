@@ -1,0 +1,4 @@
+Responsive and permanent
+永久式 可以保证刷新token还在
+响应式保证点击退出，页面刷新，数据更改； 。需要在local storage里面存夺一个，每次用get 获取一遍
+
