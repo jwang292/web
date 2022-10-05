@@ -1,0 +1,4 @@
+history.go(1) 前进
+history.go(-1)后退
+history.push() 跳转 
+history.replace() 跳转，但是替代发生跳转的页面。 比如突然失去token 返回了login 页面，再次登录获得token后 push回退会返回登录页，而replace不会返回登录页因为被覆盖了
