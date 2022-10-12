@@ -1,0 +1,235 @@
+HTML
+1.	DOCTYPE 作用
+HTML   The HyperText Markup Language, DOCTYPE= document Type. 
+Main role : let the browser know using which HTML or XHTML regulation to render the web
+The DOCTYPE should put into the <HTML>  like <!DOCTYPE html>
+2.	HTML, XML. XHTML 
+All are Markup Language.
+XML  eXtensible Markup Language. 
+Can create our own tag; ONLY one <ROOT> tag. 
+Uppercase and lowercase is different 
+Double quotes
+	XHTML is between HTML4 AND HTML5. It is created by W3C
+3.	前缀Prefix  ： data- 
+属于DOM thinking .
+We save data into a HTML TAG by prefix with data- dashes 
+<button data-di=’hi’>
+In eventListener we can use dataset.id to get the id value (hi)
+4.	HTML 语义化的理解 semantic
+Semantic HTML code communicates the meaning of its elements to both computers and humans, which helps web browsers, search engines, assistive technologies, and human developers understand the components of a web page. The key to well-written semantic HTML is the use of semantic tags.
+a.	Good for SEO
+b.	Easy for reading 
+5.	HTML5 VS HTML4
+Only one DOCTYPE <!DOCTYPE html>
+Add more tag elements: 
+语义化semantic
+section main nav footer header aside ...
+功能性 function 
+video
+Before using Flash, now using Video. There is API named video.js, which can help us to  do the video 
+Canvas -drawing a img 
+Input adds more type:  date, email, url
+Add API: websocket after 2018. Local storage 
+We can add async for script to increase the optimize page loading
+Public props : contenteditable, draggable, hidden 
+Contenteditable can let content be editing 
+<div contenteditable>
+<p>张三</p>
+<div>
+Draggable 可拖拽  draggable=’true’.  also we can use JS API 
+6.	Meta 有哪些常用用法
+For SEO
+<Meta name=’keywords’ content=’xx,xx,xx’>
+For viewport 
+Setting screen size zoom and percentage
+<meta name=’viewport’ content=’width=device-width,initial-scale,maximum-scale=1’>
+For http response header : content-type
+<Meta charset=’utf-8’>
+7.	Img tag’s srcset 作用
+响应式图片Responsive Images
+Due to the customer using different screen size. 
+If only focus on DPR device pixel ratio :
+High ratio means show cleaner 
+<img srcset=’320.png 1X, 640.png 2X, 960.png 3X’>
+If using ‘w’ width ,we need set ‘sizes’
+<img srcset=’320.png 320w’  sizes=’ (max-width:320px)100vw ,(max-width:360px)320px’ src=’…’>   sizes not support ‘100%’ only 100vw
+For testing, must test the small size img at first. However, if test the full size, the img is being loaded. So we do not need to test the small one.
+8.	Responsive Images  :   Picture TAG
+Srcset is not good for reading
+<Picture>
+<source srcset=’640.png’  mrdia=’(min-width:640px)’>
+<source srcset=480.png’  mrdia=’(min-width:480px)’>
+<img src=’320.png’ alt=’’>
+</Picture>
+9.	Script 标签上使用defer 和async的区别
+Script put before DOM is different with put end of DOM; blocking page load
+提升网页加载性能,减少页面加载时间
+a.	没有defer async， 浏览器会立刻加载执行脚本。
+不等待后续加载的文档元素，读到就开始加载执行，会引起后续文档的加载
+b.	Async, 后续文档的加载金额渲染与js脚本的加载和执行并行，也就是async 执行
+c.	Defer,加载后续文档的过程和JS脚本的加载是并行（async），此时js Only 加载不执行， jd执行需要等待文档所有元素都解析完成后以及dom contentLoaded 的事件触发执行之前。
+共同点：异步执行，不会block loading. Same time loading with the page 
+不同点：after script loading, async run immediately, defer need to waiting other defer script(等前面的defer脚本先执行，保证顺序) and DOM loading.  
+ 
+10.	前端实现web存储方式
+a.	LocalStorage  5mb sync（用户不删除，一直都在）
+b.	sessionStorage 5mb (关闭浏览器，就会销毁，用于会话)
+c.	cookie 4kb （太小，用插件API---js-cookie, 可以设置销毁时间，永久存储）
+d.	web SQL (废弃)
+e.	indexdDB  适合存储大量数据 大于250mb 无上限;  async 
+
+CSS基础
+1.	css 的优先级
+!important > 行类样式 inline style > ID选择器 Selector > 类选择器 class Selector >  标签选择器 TAG Selector > 通配符*wildcard > 继承inherit	
+*{margin:0px; padding:0px;} 这里是设置所有元素的外边距margin和内边距padding都为0。
+后面的css 权重要高于上面的权重Weights
+2.	css 哪些方式可以实现隐藏页面
+a.	opacity: 0; 透明的为0.盒子还在，占位置
+b.	visibility: hidden   盒子占位置Box takes place
+c.	display: none    盒子不占位置Box does not take place
+d.	overflow: hidden 溢出隐藏overflow hide
+e.	z-index: -9999 降低层级，上面又盒子就会覆盖 Lower the level, and the box above will cover it. Box is still at there.
+f.	transform:scale(0,0)  x,y 都缩放为0；用于动画效果 从小放大。Take place
+g.	left:-9999px  把盒子转移到屏幕以外，盒子存在。意义在不影响页面的情况下，提升SEO 
+<h1>Apple</h1>    
+h1{ left:-9999px }
+3.	px,em,rem区别 重点在rem适配
+px是绝对单位 absolute unit
+em:相对单位，Relative unit 相对与父盒子的font-size  2em意思是字体是父盒子的2倍
+rem：相对单位:相对与html 和ROOT标签 2rem 是相对与root标签的 2倍
+
+REM 适配原理： 
+a.	使用rem做单位(webpack ，写px自动转rem)
+b.	动态设置不同屏幕下的html font-size
+Dynamically set fonts under different screens
+用Flexible.js 
+4.	Element 水平居中horizontally centered方式
+a.	子盒子Margin: 0 auto
+b.	父盒子：Text-align:center 子盒子转行内块： display:inline-block
+c.	子绝父相； 子盒子： left:50%, top:50%, transform:translate(-50%,-50%)
+d.	父盒子：display:flex, justify-content:center(水平)  align-items:center(垂直)
+5.	Css 里的定位方式Position :
+a.	Static 默认（default） top right buttom left z-index无效，上到下，左到右
+b.	Fixed 固定   相对整个浏览器的位置position relative to the entire browser
+c.	Absolute 绝对   相对与有定位的父辈元素Relative and positioned parent elements
+d.	Relative 
+e.	Sticky 粘性定位 relative+fixed，父元素在视口区域，并进入top值给定的范围，当前元素就是fixed定位，否则就是relative定位
+实现吸顶效果ceiling effect
+Position:sticky; top:0(滚动后，距离屏幕top为0时开始吸顶);
+6.	Z-index 
+3D 坐标里的z方向
+默认0，可以通过z-index设置postion的图层位置
+ 
+
+注意： 
+a.	如果父元素有定位并且设置了z-index，优先按照父元素的定位的z-index进行比较层级
+b.	如果只有static 定位而没有任何别的定位，z-index是不生效的
+7.	清除浮动Clear Float
+清除浮动照成的影响，浮动脱离标准流，不占位置（父盒子不会被撑开）
+Floating is out of the standard flow and does not occupy a place (the parent box will not be stretched)
+a.	定高法
+子盒子不设置float前，原先子盒子有高度，父盒子没有设置高度，父盒子依然会按子盒子的高度显示。但如何子盒子设置了float， 哪么父盒子会失去高度。
+解决：给所有盒子设置高度。
+问题：写死了 cannot change 
+b.	为父盒子添加一个子盒子，clear: both;
+c.	为父盒子设置overflow: hidden ; 溢出隐藏，触发bfc，解决浮动影响
+缺点：如果设置鼠标mosue blur 显示下拉框，有可能被隐藏
+d.	伪元素 .clearfix:{clear:both}
+主流用flex布局，稳定，要考虑兼容compatible
+8.	BFC的理解
+块级格式化上下文(Block Formatting Context)
+独立渲染区域，Independent render area 将BFC里的内容和外面的隔离
+BFC会触发方式：
+a.	Position： absolute/ fixed
+b.	Float: left / right ; 浮动元素多个放在一起，会相会隔开，2个box都设置float的同时，不会叠加，而是按个显示
+c.	Overflow:非visible, hidden/ auto/scroll
+d.	Display:inline-block
+BFC应用：
+a.	处理块级元素，上下margin合并； 2盒子上面的设置margin-bottom, 下面的设置margin-top ； 由于BFC被触动，导致上下设置的值会合并而不是叠加
+b.	处理margin 塌陷
+c.	清除浮动
+d.	实现自适应布局
+左边固定，右边自适应
+Flex=> display:flex;  左边定宽，右边flex:1
+Float => 2边浮动，中间自适应
+左浮动float:left 右浮动 float:right; 浮动不占位置的；中间盒子设置overflow:hidden
+Position=> 先定位，再设置padding
+9.	CSS Sprites 以及好处
+精灵图 图片合并技术；如果正常想引入8张图片就需要向服务器发送8次请求，有了sprites 技术，一次请求拿8张图
+a.	容器设置 display:inline-block （才能设置宽高）, width and height 设置为每张sprites 的宽高
+b.	给所有的sprite图片设置 background ： url（‘…./ss.png’）0px 0px
+ 
+c.	设置背景定位 调节高度的数值
+缺点：
+a.	改一个图就要改所有的图片
+b.	http2逐渐普及，有了多路复用 multiplexing解决多个小图片所造成的HTTP请求消耗；sprites存在价值下降
+c.	图片放大会失真distortion
+主流处理图片方案： iconfont, svg矢量图
+10.	媒体查询的理解media inquiries； 根据屏幕尺寸，显示不同效果
+考察点：响应式适配 Responsive adaptation
+Media inquires 开始与CSS3，用于Responsive adaptation
+组成部分：
+a.	一个可选的媒体类型： screen, print
+b.	零或多个媒体功能限定表达式： max-width:500px; orientation:landscape
+c.	 
+这2部分最后都会解析为true / false ；然后整个查询为true后，和查询关联的样式会生效，否则会不生效
+ 
+11.	盒子模型的理解  CSS basic box model
+内容content
+内边距 padding
+边框 border
+外边距 margin
+
+ 
+12.	标准盒子模型和怪异盒子模型
+Content box 标准盒子
+ 
+Border-box 怪异盒子
+ 
+设置的padding border会自动调试成符合width height的大小，不需要自己计算
+13.	伪类和伪元素的区别
+Pseudo-class : 用来选中元素； 权重和class 一样高 ； ：为前缀
+:hover
+:nth-child(1)
+:checked
+:first-child
+:disabled
+Pseudo-element  用来创建元素；该元素在DOM TREE 中不存在
+:before/ :after
+能看到，但是无法注册事件，无法通过JS控制
+14.	Flex的理解
+语法：display: flex; 为父盒子设置
+	Flex-direction: 调整主轴方向
+ 
+	 
+Align-items 控制单行 
+ 
+在了解 flex：1 之前我们先了解一下flex的属性值有哪些，就如同background一样，有着backgournd-images、background-color、background-position等属性名一样， flex也有着3个类似的属性，（属性都是给子级添加的，父级必须设置display：flex)。
+	Flex-grow: 1 多余的空间分给1
+	Flex-shrink:1 超出部分被平均分配给了四个盒子，盒子进行了挤压
+ 	flex-basis: auto
+	flex-grow：0；
+flex-shrink：1；
+flex-basis：auto
+也可以合成一个：flex： 0 1 auto；
+然而，这并不是flex：1的完整写法，上面这个只是flex的默认值，表示子级总宽度小于父级盒子宽度时，对多余空间不处理，子级总宽度大于父级盒子宽度时，对子级进行挤压
+flex：1的完整写法应该为： flex： 1 1 0%
+flex：1 应该是子级元素占满整个多余部分而不进行挤压，当然，一般弹性盒中只能设置一个子级元素 flex：1；
+
+
+
+JS基础
+1.	Hoisting 变量声明提升
+ 
+2.	JS参数是以什么方式传递的
+ 
+ 
+3.	垃圾回收机制
+ 
+ 
+   
+ 
+4.	Js作用域链的理解
+
+
+
