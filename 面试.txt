@@ -231,5 +231,232 @@ JS基础
  
 4.	Js作用域链的理解
 
+Function fn(){
+Let age =18
+Let obj={}
+}
+Fn()  调用完age 就会触发垃圾回收机制
+Fn() 2次创建的obj内存地址是不一样的 所以不相等
+在整个fn()执行完毕后，所有的local variable 会清理
+
+一层一层往外找变量的过程就是作用域链，是一种引用关系，例子如下
+ 
+ 
+
+
+ 
+
+
+
+ 
+ 
+JS调用栈call stack后进先出
+为什么全局函数访问不到local variable ? 因为后进先出，local variable被调用后被释放了，所以访问不到。内部的可以通过作用域链访问外部，但外部无法访问内部，因为被销毁了。 
+5.	闭包的理解 Closures
+内部函数，访问外部函数的变量，会形成闭包
+内部return 出去，外部接受；导致原本应该被释放的变量，被保存了下来
+ 
+ 
+JS call stack的原理， 一旦fn（）调用完成，则内部count变量会被释放掉
+为了防止如此
+我们需要return inner 则count 值就被缓存了
+再在外面用个variable 接受，完成闭包，实现数据私有
+ 
+调用result 就=调用fn
+就算修改count值 也不会影响function本身数值
+ 
+ 
+如何解决闭包带来的内存泄漏memory leak
+ 
+		补充
+  打印值为 6 6 6 6 6
+因为是async 所以执行是 I已经结束循环后+1.  Var I 是全部变量
+解决方法
+ 
+ 
+（）（）函数自调用
+现在
+ 
+用let 就会解决 因为let I 是局部变量
+ 
+p.name 访问不到是因为 name 是局部变量；若内部改成this.name=x 外部就可以访问了	
+6.	JS中数据类型隐式转换data type implicit conversion
+ 
+ 
+    ==发现类型不一，会进行类型转换，就会触发data type implicit conversion
+7.	原型链Prototype chain
+function Person(name, age) {   this.name = name   
+this.age = age  
+ this.sayHi = () => {     console.log('hi')   } }  //通用的方法添加给每个实例，可以，但浪费内存；其实所有实例可以公用一个sayHi 方法
+let p1 = new Person('zs', 12)
+ let p2 = new Person('ls', 19)
+ console.log(p1.sayHi === p2.sayHi)      False，  每创建一个对象就会开辟一个新的空间
+用原型prototype
+function Person(name, age) {  
+ this.name = name   
+this.age = age  
+}  
+//添加到prototype上的所有的实例都可以访问到
+Person.prototype.sayHi=()=>{{     console.log('hi') }
+let p1 = new Person('zs', 12)
+ let p2 = new Person('ls', 19)
+ console.log(p1.sayHi === p2.sayHi)  true 
+
+原型三角关系
+构造函数  实例  原型
+Constructor ---new- instance--- __proto__--> prototype
+                     --------------prototype-----------------
+		-----------constructor-----------------
+Instance 访问属性或方法是，优先访问自己的，自己没找到，往原型上找，如果还是没找到，会继续找原型的原型，直到找到顶端—Object.prototype,如果还没有就会return error
+
+ 
+hasOwnProperty(‘xx’)  用来判断属性‘xx’是不是自己的，还是原型链上的
+ 
+
+
+ 
+8.	继承Inheritance
+继承属性和方法，便于管理和复用multiplex
+ 继承： 将多个构造函数，建立关联，实现方便管理和方便复用
+目标：原型继承=继承方法
+原型继承： 通过改造原型链实现继承，利用原型链的特征实现继承
+ 
+一个对象.prototype = new 别的对象（） 会继承别的对象上的属性/方法
+
+一个对象.prototype = 别的对象.prototype 不可以，因为会公用一个原型，有些不属于别的对象的属性也会别附带给别的对象
+ 
+组合继承composition inheritance
+Prototype inheritance  +  constructor(call)的方式实现
+a.	Prototype chain :改造原型链的技术，实现继承方法
+Student.prototype =new Person()
+b.	实例属性的构造过程没有得到复用，可以通过构造函数的方式，实现复用 
+调用函数；改变函数执行时this的指向，默认是window
+Person.call(this,name,age)      // this 是指实例stu; 后面是传参数
+ 
+	      寄生式组合继承Parasitic Compositional Inheritance
+ 
+ 	Student.prototype =Object.create(Person.prototype)
+	 
+ES6 inheritance    ES6 2015年发布的js标准ECMAScript 6
+Class Person{  
+//类似与之前的构造函数
+Constructor(name,age){
+This.name=name
+This.age =age
+}
+//直接添加到了原型上 prototype
+sayHi(){console.log(‘hi’)}
+jump(){console.log(‘jump’)}
+}
+Class Teacher extends Person{//如果没有提供构造函数，在继承时，会默认自动借调父构造函数
+Constructor(name,age,lesson){ 
+//触发父构造函数，进行实例的属性初始化
+Super(name,age)
+This.lesson=lesson
+}
+Teach(){
+console.log(‘teach’)
+}
+} 
+9.	判断是否是数组
+a.	Object.prototype.toString.call(要测试的变量)	如果是array 返回 [Object Array]       
+普通的 xx.toString() 只会转成string 和prototype上的toString不一样
+b.	Array.isArray(要测试的变量)
+10.	This 的理解
+This指向问题：
+a.	函数调用模式 fn（）指向window   (默认绑定) default binding
+b.	方法调用模式 obj.fn() 指向调用者（隐式绑定）implicit binding
+c.	上下文调用模式 call, apply, bind 想指向谁就指向谁(显示绑定) show binding
+Fn.call(this指向的内容，参数1,参数2…..  argments 挨个传
+Fn.apply (this指向的内容，[参数1,参数2….])  argument是一个array
+d.	构造函数模式 	new Person() this指向创建的实例
+New 4步
+1)	创建对象
+2)	构造函数this指向新对象
+3)	执行构造函数
+4)	返回实例
+11.	（）=>{} 箭头函数中的this
+ 
+12.	Promise 静态方法
+Promise 的三个状态： pending 默认状态，等待中；fulfilled(成功)； rejected(失败)
+a.	Resolve 函数被执行时，会将promise的状态从pending 改成fulfilled成功
+b.	Reject函数被执行时，会将promise的状态从pending 改成rejected失败
+
+Promise.reject()      简写
+New promise((resolve,reject)=>{
+reject()
+})
+
+Promise.resolve() 
+New promise((resolve,reject)=>{
+resolve ()
+})
+
+Promise.all()  处理工作中并发Concurrency多个请求
+ 
+High concurrency 高并发是back-end issue 
+13.	宏任务，微任务Macro tasks, micro tasks
+Console.log(1)
+setTimeout(function(){
+Console.log(2)
+},0)
+setTimeout(function(){
+Console.log(4)
+},0)
+Console.log(3)
+
+1324  JS是单线程，如果遇到async的内容，会交给browser处理（等待，监听）；所以遇到异步会跳过处理后面的
+Event LOOP
+ 
+
+主线程要执行的代码=》宏任务
+定时器/延时器=》宏任务
+注意：只有上一个宏任务执行完成，才会考虑执行下一个宏任务
+Console.log(1)宏任务1
+Console.log(1) 宏任务1
+Console.log(1) 宏任务1
+setTimeout(function(){
+Console.log(2) 宏任务2
+Console.log(2) 宏任务2
+},0)
+setTimeout(function(){
+Console.log(4) 宏任务3
+Console.log(4) 宏任务3
+Console.log(4) 宏任务3
+},0)
+Console.log(3) 宏任务1
+      
+微任务：在上个宏任务做完 和下个宏任务开始前。 Promise.then  和promise.catch
+
+ 
+	Async 可以用于修饰一个函数，表示一个函数是异步
+	Async 只有遇到await开始往下，才是异步的开始；注意！await后面还是同步只有下面的才是异步Const res =await 1   1是同步，const res = 才开始是异步
+	Async function fn(){
+ 	   Console.log(111)}
+	Fn()
+	Console.log(222)
+	结果 111  222   只有async 没有await 等于没写async
+	Async function fn(){
+	// await 后面的内容可以理解为  promise.then的内容
+	Const res =await 1
+ 	   Console.log(res)}
+	Fn()
+	Console.log(222)
+ 结果 222 1
+	Async function fn(){
+	   Console.log（333）
+	Const res =await 1
+ 	   Console.log(res)}
+	Fn()
+	Console.log(222)
+	结果 333 222 1
+	 
+ 
+14.	Async await
+ 
+15.	相较与promise,async/await优势
+ p.then 成功 p.catch失败			
+	16. 深拷贝
+	  当然递归也能解决，只是麻烦
 
 
