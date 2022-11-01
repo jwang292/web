@@ -1,0 +1,36 @@
+getBoundingClientRect
+返回值是一个 DOMRect 对象，是包含整个元素的最小矩形（包括 padding 和 border-width）。该对象使用 left、top、right、bottom、x、y、width 和 height 
+这几个以像素为单位的只读属性描述整个矩形的位置和大小。除了 width 和 height 以外的属性是相对于视图窗口的左上角来计算的。
+
+
+<div id="example"></div>
+<div id="controls"></div>
+Copy to Clipboard
+div#example {
+  width: 400px;
+  height: 200px;
+  padding: 20px;
+  margin: 50px auto;
+  background: purple;
+}
+
+body { padding-bottom: 1000px; }
+p { margin: 0; }
+Copy to Clipboard
+function update() {
+  const container = document.getElementById("controls");
+  const elem = document.getElementById("example");
+  const rect = elem.getBoundingClientRect();
+
+  container.innerHTML = '';
+  for (let key in rect) {
+    if(typeof rect[key] !== 'function') {
+      let para = document.createElement('p');
+      para.textContent  = `${ key } : ${ rect[key] }`;
+      container.appendChild(para);
+    }
+  }
+}
+
+document.addEventListener('scroll', update);
+update();
